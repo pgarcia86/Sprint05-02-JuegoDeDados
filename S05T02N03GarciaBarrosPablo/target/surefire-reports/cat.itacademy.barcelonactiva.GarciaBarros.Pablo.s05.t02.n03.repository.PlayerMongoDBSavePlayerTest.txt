@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.PlayerMongoDBSavePlayerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.706 s - in cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.PlayerMongoDBSavePlayerTest

@@ -36,6 +36,9 @@ public class PlayerMySQL {
 	@Column(name = "registration_date")
 	private Date registrationDate;
 	
+	@Column(name = "success_rate")
+	private Float successRate;
+	
 	public PlayerMySQL(String name, String date) {
 		
 		this.playerName = name;
@@ -79,6 +82,14 @@ public class PlayerMySQL {
 
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+	
+	public Float getSuccessRate() {
+		return this.successRate;
+	}
+	
+	public void setSuccessRate(Float successRate) {
+		this.successRate = successRate;
 	}
 	
 	

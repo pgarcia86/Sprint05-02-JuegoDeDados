@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.S05T02N03GarciaBarrosPabloApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.178 s - in cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.S05T02N03GarciaBarrosPabloApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.809 s - in cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.S05T02N03GarciaBarrosPabloApplicationTests

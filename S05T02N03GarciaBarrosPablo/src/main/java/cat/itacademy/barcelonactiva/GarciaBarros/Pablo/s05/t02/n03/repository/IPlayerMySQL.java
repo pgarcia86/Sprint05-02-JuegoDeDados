@@ -14,10 +14,10 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 @Repository
 public interface IPlayerMySQL extends JpaRepository<PlayerMySQL, Integer>{
 	
-	@Query("SELECT p.idPlayer, p.playerName, p.registrationDate, SUM(d.win = TRUE)/COUNT(d.win)*100 AS successRate "
+	@Query("SELECT new cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL (p.idPlayer, p.playerName, p.registrationDate, (SUM(d.win = TRUE) * 100 / COUNT(d.win)) * 1.0 AS successRate) "
 			+ "FROM DiceRollMySQL AS d INNER JOIN PlayerMySQL p ON d.idPlayer = p.idPlayer WHERE d.idPlayer = :id "
 			+ "GROUP BY p.idPlayer, p.playerName, p.registrationDate")	
-	public List<Object[]> getOnePlayer(@Param("id") Integer id);
+	public List<PlayerMySQL> getOnePlayer(@Param("id") Integer id);
 	
 	@Modifying
 	@Transactional
@@ -25,22 +25,22 @@ public interface IPlayerMySQL extends JpaRepository<PlayerMySQL, Integer>{
 	public void deleteTodos();
 	
 
-	@Query("SELECT p.idPlayer, p.playerName, p.registrationDate, SUM(d.win = TRUE)/COUNT(d.win)*100 AS successRate "
+	@Query("SELECT new cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL(p.idPlayer, p.playerName, p.registrationDate, (SUM(d.win = TRUE) * 100.0 / COUNT(d.win)) * 1.0 AS successRate) "
 			+ "FROM DiceRollMySQL AS d INNER JOIN PlayerMySQL p ON d.idPlayer = p.idPlayer "
 			+ "GROUP BY p.idPlayer, p.playerName, p.registrationDate")
-	public List<Object[]> getRanking();
+	public List<PlayerMySQL> getRanking();
 
-	@Query("SELECT p.idPlayer, p.playerName, p.registrationDate, SUM(d.win = TRUE)/COUNT(d.win)*100 AS loser "
+	
+	@Query("SELECT new cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL (p.idPlayer, p.playerName, p.registrationDate, (SUM(d.win = TRUE) * 100 / COUNT(d.win)) * 1.0 AS loser) "
 			+ "FROM DiceRollMySQL d INNER JOIN PlayerMySQL p ON d.idPlayer = p.idPlayer "
-			+ "GROUP BY p.idPlayer, p.playerName, p.registrationDate ORDER BY loser LIMIT 1")
-	
-	public List<Object[]> getLoser();
+			+ "GROUP BY p.idPlayer, p.playerName, p.registrationDate ORDER BY loser LIMIT 1")	
+	public List<PlayerMySQL> getLoser();
 
 	
-	@Query("SELECT p.idPlayer, p.playerName, p.registrationDate, SUM(d.win = TRUE)/COUNT(d.win)*100 AS loser "
+	@Query("SELECT new cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL (p.idPlayer, p.playerName, p.registrationDate, (SUM(d.win = TRUE) * 100 / COUNT(d.win)) * 1.0 AS loser) "
 			+ "FROM DiceRollMySQL d INNER JOIN PlayerMySQL p ON d.idPlayer = p.idPlayer "
 			+ "GROUP BY p.idPlayer, p.playerName, p.registrationDate ORDER BY loser DESC LIMIT 1")
-	public List<Object[]> getWinner();
+	public List<PlayerMySQL> getWinner();
 	
 
 }

@@ -16,13 +16,11 @@ public interface IPlayerServicesMySQL {
 	
 	public PlayerMySQL update(Integer id, String name);	
 	
-	public List<Object[]> getOne(Integer id);
-	
-	public List<Object[]> getRanking();
+	public List<PlayerMySQL> getRanking();
 
-	public List<Object[]> getLoser();
+	public List<PlayerMySQL> getLoser();
 
-	public List<Object[]> getWinner();
+	public List<PlayerMySQL> getWinner();
 	
 	public DiceRollMySQL play(Integer id, Integer firstRoll, Integer secondRoll);
 	

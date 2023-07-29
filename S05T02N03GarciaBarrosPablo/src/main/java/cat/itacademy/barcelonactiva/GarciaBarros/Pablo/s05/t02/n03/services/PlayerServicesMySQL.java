@@ -60,24 +60,19 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		
 		return null;		
 	}		
-	
-	@Override
- 	public List<Object[]> getOne(Integer id) {
-		return this.playerMySQL.getOnePlayer(id);
-	}	
  	
 	@Override
-	public List<Object[]> getRanking(){		
+	public List<PlayerMySQL> getRanking(){		
 		return this.playerMySQL.getRanking();
 	}	
 
 	@Override
-	public List<Object[]> getLoser(){
+	public List<PlayerMySQL> getLoser(){
 		return this.playerMySQL.getLoser();
 	}	
 
 	@Override
-	public List<Object[]> getWinner(){
+	public List<PlayerMySQL> getWinner(){
 		return this.playerMySQL.getWinner();
 	}
 
@@ -86,7 +81,6 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	public void delete(Integer id) {		
 		this.diceRollMySQL.deleteAll(id);		
 	}
-	
 	
 	@Override
 	public Boolean getOneById(Integer id) {

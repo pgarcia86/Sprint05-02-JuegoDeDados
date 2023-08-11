@@ -9,11 +9,11 @@ import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.mongodb.client.MongoClients;
 
@@ -23,13 +23,12 @@ import de.flapdoodle.embed.mongo.config.ImmutableMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.process.runtime.Network;
-import de.flapdoodle.embed.process.distribution.Version;
 
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMongoDB;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMongoDB;
 
-@DataMongoTest
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PlayerMongoDBSavePlayerTest {
 	
 	
@@ -49,6 +48,7 @@ public class PlayerMongoDBSavePlayerTest {
 	@BeforeEach
 	public void loadPlayerDiceRoll() {
 		
+		/*
 		String ip = "localhost";
         int port = 27017;
 
@@ -74,7 +74,7 @@ public class PlayerMongoDBSavePlayerTest {
 			e.printStackTrace();
 		}
         mongoTemplate = new MongoTemplate(MongoClients.create(String.format(CONNECTION_STRING, ip, port)), "test");
-		
+		*/
 		
 		Date currentDate = new Date();
 		currentDate.getTime();
@@ -210,9 +210,8 @@ public class PlayerMongoDBSavePlayerTest {
 	@AfterEach
 	public void deletePlayers() {
 		
-		//iPlayerMongo.deleteAll();
-		//iDiceRollMongo.deleteAll();
-		//mongodExecutable.stop();
+		iPlayerMongo.deleteAll();
+		iDiceRollMongo.deleteAll();
 	}
 	
 	

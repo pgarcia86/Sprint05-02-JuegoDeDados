@@ -2,25 +2,40 @@ package cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.mongodb.client.MongoClients;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
-
+import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.ImmutableMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.process.runtime.Network;
 
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMongoDB;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMongoDB;
 
-@DataMongoTest
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PlayerMongoDBSavePlayerTest {
+	
+	
+    private static final String CONNECTION_STRING = "mongodb://%s:%d";
+
+    private MongodExecutable mongodExecutable;
+    private MongoTemplate mongoTemplate;
 	
 	@Autowired
 	private IPlayerMongoDB iPlayerMongo;
@@ -32,6 +47,34 @@ public class PlayerMongoDBSavePlayerTest {
 	//Cargo jugadores en la base de datos de prueba antes de cada test
 	@BeforeEach
 	public void loadPlayerDiceRoll() {
+		
+		/*
+		String ip = "localhost";
+        int port = 27017;
+
+        ImmutableMongodConfig mongodConfig = null;
+		try {
+			mongodConfig = MongodConfig.builder()
+			    .version(de.flapdoodle.embed.mongo.distribution.Version.Main.PRODUCTION)
+			    //.version(Version.Main.PRODUCTION)
+			    .net(new Net(ip, port, Network.localhostIsIPv6()))
+			    .build();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        MongodStarter starter = MongodStarter.getDefaultInstance();
+        mongodExecutable = starter.prepare(mongodConfig);
+        try {
+			mongodExecutable.start();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        mongoTemplate = new MongoTemplate(MongoClients.create(String.format(CONNECTION_STRING, ip, port)), "test");
+		*/
 		
 		Date currentDate = new Date();
 		currentDate.getTime();
@@ -162,7 +205,7 @@ public class PlayerMongoDBSavePlayerTest {
 		iDiceRollMongo.save(diceRoll10);
 	}
 	
-	/*
+	
 	//Elimino los jugadores y las tiradas de dados despues de cada test
 	@AfterEach
 	public void deletePlayers() {
@@ -170,7 +213,8 @@ public class PlayerMongoDBSavePlayerTest {
 		iPlayerMongo.deleteAll();
 		iDiceRollMongo.deleteAll();
 	}
-	*/
+	
+	
 	@Test
 	public void saveNewPlayerTest() {
 		
@@ -187,8 +231,4 @@ public class PlayerMongoDBSavePlayerTest {
 		assertThat(playerSaved).isNotNull();
 		assertThat(playerSaved.getPlayerName()).isEqualTo("Antonella");
 	}
-	
-	
-	
-
 }

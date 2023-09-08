@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,7 +33,7 @@ public class PlayerMongoDB {
 	private Date registrationDate;
 	
 	//Con esta notacion hago referencia a un documento en el que esta la lista de DiceRoll
-	@DBRef
+	//@DBRef
 	private List<DiceRollMongoDB> diceRolls;
 	
 	public PlayerMongoDB(Integer id, String name, String date) {
@@ -50,6 +51,8 @@ public class PlayerMongoDB {
 		catch (ParseException e){
 			e.printStackTrace();
 		}
+		
+		this.diceRolls = new ArrayList<DiceRollMongoDB>();
 	}
 
 

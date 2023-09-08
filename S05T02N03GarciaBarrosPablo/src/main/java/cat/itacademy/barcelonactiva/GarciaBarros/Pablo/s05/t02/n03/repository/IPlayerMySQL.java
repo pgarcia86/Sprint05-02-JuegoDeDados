@@ -17,7 +17,7 @@ public interface IPlayerMySQL extends JpaRepository<PlayerMySQL, Integer>{
 	@Query("SELECT new cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL (p.idPlayer, p.playerName, p.registrationDate, (SUM(d.win = TRUE) * 100 / COUNT(d.win)) * 1.0 AS successRate) "
 			+ "FROM DiceRollMySQL AS d INNER JOIN PlayerMySQL p ON d.idPlayer = p.idPlayer WHERE d.idPlayer = :id "
 			+ "GROUP BY p.idPlayer, p.playerName, p.registrationDate")	
-	public List<PlayerMySQL> getOnePlayer(@Param("id") Integer id);
+	public PlayerMySQL getOnePlayer(@Param("id") Integer id);
 	
 	@Modifying
 	@Transactional

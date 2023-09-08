@@ -100,7 +100,7 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	public PlayerMySQL getOneByPlayerId(Integer id) {
 		
 		if(getOneById(id) == true) {
-			return playerMySQL.getReferenceById(id);
+			return playerMySQL.getOnePlayer(id);
 		}
 		else {
 			return null;

@@ -42,7 +42,7 @@ public class PlayerServicesMongo implements IPlayerServicesMongo{
 
 	@Override
 	public List<PlayerMongoDB> getAll() {
-		return null;
+		return playerMongo.findAll();
 	}
 
 	@Override
@@ -58,5 +58,27 @@ public class PlayerServicesMongo implements IPlayerServicesMongo{
 	@Override
 	public void delete(Integer id) {
 		this.diceRollMongo.deleteAllByIdPlayer(id);
+	}
+	
+	public boolean existPlayer(Integer id) {
+		
+		if(playerMongo.existsById(id) == true) {
+			return true;
+		}
+		return false;
+		
+	}
+
+	@Override
+	public Optional<PlayerMongoDB> getOnePlayer(Integer id) {
+		
+		if(existPlayer(id) == true) {
+			
+			Optional<PlayerMongoDB> onePlayer = playerMongo.findById(id);			
+			return onePlayer;
+			
+		}
+		return null;
+		
 	}
 }

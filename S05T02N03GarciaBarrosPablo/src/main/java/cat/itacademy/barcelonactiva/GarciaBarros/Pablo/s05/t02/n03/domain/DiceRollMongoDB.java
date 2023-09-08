@@ -3,7 +3,6 @@ package cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

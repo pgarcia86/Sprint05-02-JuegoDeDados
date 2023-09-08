@@ -253,7 +253,7 @@ public class MySQLTest {
 	
 	//Test para obtener el ranking de jugadores
 	@Test
-	public void testGetRanking() {
+	public void getRankingTest() {
 		
 		List<PlayerMySQL> getRanking = iPlayerMySQL.getRanking();
 		

@@ -12,6 +12,10 @@ import java.util.*;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL;
 
+
+
+
+//Estos test estan hechos con JUnit
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DataJpaTest
 public class MySQLTest {

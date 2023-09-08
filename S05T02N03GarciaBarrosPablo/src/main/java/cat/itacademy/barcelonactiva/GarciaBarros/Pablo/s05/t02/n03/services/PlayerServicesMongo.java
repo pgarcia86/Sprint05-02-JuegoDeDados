@@ -33,8 +33,12 @@ public class PlayerServicesMongo implements IPlayerServicesMongo{
 		
 		if(playerMongo.existsById(id)) {
 			Optional<PlayerMongoDB> playerAux = playerMongo.findById(id);
-			DiceRollMongoDB diceRoll = new DiceRollMongoDB(playerAux.get().getIdPlayer(), firstRoll, secondRoll); 
-			diceRollMongo.save(diceRoll);
+			DiceRollMongoDB diceRoll = new DiceRollMongoDB(firstRoll, secondRoll); 
+			
+			playerAux.get().getDiceRolls().add(diceRoll);
+			
+			playerMongo.save(playerAux.get());
+			
 			return diceRoll;
 		}
 		return null;		
@@ -57,7 +61,16 @@ public class PlayerServicesMongo implements IPlayerServicesMongo{
 
 	@Override
 	public void delete(Integer id) {
-		this.diceRollMongo.deleteAllByIdPlayer(id);
+		
+		if(existPlayer(id)) {
+			
+			Optional<PlayerMongoDB> playerAux = playerMongo.findById(id);
+			
+			playerAux.get().getDiceRolls().clear();
+			
+			playerMongo.save(playerAux.get());
+			
+		}
 	}
 	
 	public boolean existPlayer(Integer id) {

@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,9 +31,9 @@ public class PlayerMongoDB {
 
 	private Date registrationDate;
 	
-	//Con esta notacion hago referencia a un documento en el que esta la lista de DiceRoll
-	//@DBRef
 	private List<DiceRollMongoDB> diceRolls;
+	
+	private Float successRate;
 	
 	public PlayerMongoDB(Integer id, String name, String date) {
 		
@@ -53,6 +52,7 @@ public class PlayerMongoDB {
 		}
 		
 		this.diceRolls = new ArrayList<DiceRollMongoDB>();
+		this.successRate = 0f;
 	}
 
 
@@ -60,38 +60,57 @@ public class PlayerMongoDB {
 		this.idPlayer = id;
 		this.playerName = name;
 		this.registrationDate = date;
+		this.diceRolls = new ArrayList<DiceRollMongoDB>();
+		this.successRate = 0f;
 	}
 
+	
 	public Integer getIdPlayer() {
 		return idPlayer;
 	}
 
+	
 	public void setIdPlayer(Integer idPlayer) {
 		this.idPlayer = idPlayer;
 	}
 
+	
 	public String getPlayerName() {
 		return playerName;
 	}
 
+	
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
 
+	
 	public Date getRegistrationDate() {
 		return registrationDate;
 	}
 
+	
 	public void setRegistrationDate(Date date) {
 		this.registrationDate = date;
 	}
 
+	
 	public List<DiceRollMongoDB> getDiceRolls() {
 		return diceRolls;
 	}
 
+	
 	public void setDiceRolls(List<DiceRollMongoDB> diceRolls) {
 		this.diceRolls = diceRolls;
 	}
 	
+	
+	public Float getSuccessRate() {
+		return successRate;
+	}
+	
+	
+	public void setSuccessRate(Float successRate) {
+		this.successRate = successRate;
+	}	
 }

@@ -2,10 +2,9 @@ package cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -14,17 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.mongodb.client.MongoClients;
-
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.ImmutableMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.process.runtime.Network;
 
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMongoDB;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMongoDB;
@@ -32,18 +21,11 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MongoDBTest {
-	
-	
-    private static final String CONNECTION_STRING = "mongodb://%s:%d";
-    
-    private MongodExecutable mongodExecutable;
-    private MongoTemplate mongoTemplate;
+
 	
 	@Autowired
 	private IPlayerMongoDB iPlayerMongo;
 	
-	@Autowired
-	private IDiceRollMongoDB iDiceRollMongo;
 	
 	@Autowired 	
 	private ICustomMongoDBImpl implPlayerMongo;
@@ -52,34 +34,7 @@ public class MongoDBTest {
 	//Cargo jugadores en la base de datos de prueba antes de cada test
 	@BeforeEach
 	public void loadPlayerDiceRoll() {
-		
-		
-		String ip = "localhost";
-        int port = 27017;
 
-        ImmutableMongodConfig mongodConfig = null;
-		try {
-			mongodConfig = MongodConfig.builder()
-			    .version(de.flapdoodle.embed.mongo.distribution.Version.Main.PRODUCTION)
-			    //.version(Version.Main.PRODUCTION)
-			    .net(new Net(ip, port, Network.localhostIsIPv6()))
-			    .build();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-        MongodStarter starter = MongodStarter.getDefaultInstance();
-        mongodExecutable = starter.prepare(mongodConfig);
-        try {
-			mongodExecutable.start();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        mongoTemplate = new MongoTemplate(MongoClients.create(String.format(CONNECTION_STRING, ip, port)), "test");
-		
 		
 		Date currentDate = new Date();
 		currentDate.getTime();
@@ -88,126 +43,55 @@ public class MongoDBTest {
 				.idPlayer(1)
 				.playerName("Esteban")
 				.registrationDate(currentDate)
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
 				.build();
+		iPlayerMongo.save(player1);
 		
 		PlayerMongoDB player2 = PlayerMongoDB.builder()
 				.idPlayer(2)
 				.playerName("Roberto")
 				.registrationDate(currentDate)
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
 				.build();
+		iPlayerMongo.save(player2);
 		
 		PlayerMongoDB player3 = PlayerMongoDB.builder()
 				.idPlayer(3)
 				.playerName("Andrea")
 				.registrationDate(currentDate)
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
 				.build();
-		
+		iPlayerMongo.save(player3);
+				
 		PlayerMongoDB player4 = PlayerMongoDB.builder()
 				.idPlayer(4)
 				.playerName("Carmina")
 				.registrationDate(currentDate)
-				.build();
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
+				.build();	
+		iPlayerMongo.save(player4);		
 		
+		player1.getDiceRolls().add(new DiceRollMongoDB(4,3));
 		iPlayerMongo.save(player1);
+		
+		player2.getDiceRolls().add(new DiceRollMongoDB(4,1));
+		player2.getDiceRolls().add(new DiceRollMongoDB(4,3));
 		iPlayerMongo.save(player2);
+		
+		player3.getDiceRolls().add(new DiceRollMongoDB(4,1));
+		player3.getDiceRolls().add(new DiceRollMongoDB(4,1));
+		player3.getDiceRolls().add(new DiceRollMongoDB(4,3));
 		iPlayerMongo.save(player3);
-		iPlayerMongo.save(player4);
 		
-		//Jugador 1
-		DiceRollMongoDB diceRoll1 = DiceRollMongoDB.builder()
-								.idPlayer(player1.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(3)
-								.win(true)
-								.build();
-
-		iDiceRollMongo.save(diceRoll1);
-
-		//Jugador2
-		DiceRollMongoDB diceRoll2 = DiceRollMongoDB.builder()
-								.idPlayer(player2.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(2)
-								.win(false)
-								.build();
-
-		iDiceRollMongo.save(diceRoll2);
-
-		DiceRollMongoDB diceRoll3 = DiceRollMongoDB.builder()
-								.idPlayer(player2.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(3)
-								.win(true)
-								.build();
-
-		iDiceRollMongo.save(diceRoll3);
-		
-		
-		//Jugador3
-		DiceRollMongoDB diceRoll4 = DiceRollMongoDB.builder()
-								.idPlayer(player3.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(1)
-								.win(false)
-								.build();
-
-		iDiceRollMongo.save(diceRoll4);
-
-		DiceRollMongoDB diceRoll5 = DiceRollMongoDB.builder()
-								.idPlayer(player3.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(1)
-								.win(false)
-								.build();
-
-		iDiceRollMongo.save(diceRoll5);
-
-		DiceRollMongoDB diceRoll6 = DiceRollMongoDB.builder()
-								.idPlayer(player3.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(3)
-								.win(true)
-								.build();
-
-		iDiceRollMongo.save(diceRoll6);
-		
-		
-		//Jugador4
-		DiceRollMongoDB diceRoll7 = DiceRollMongoDB.builder()
-								.idPlayer(player4.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(1)
-								.win(false)
-								.build();
-
-		iDiceRollMongo.save(diceRoll7);
-
-		DiceRollMongoDB diceRoll8 = DiceRollMongoDB.builder()
-								.idPlayer(player4.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(1)
-								.win(false)
-								.build();
-
-		iDiceRollMongo.save(diceRoll8);
-
-		DiceRollMongoDB diceRoll9 = DiceRollMongoDB.builder()
-								.idPlayer(player4.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(1)
-								.win(false)
-								.build();
-
-		iDiceRollMongo.save(diceRoll9);
-		
-		DiceRollMongoDB diceRoll10 = DiceRollMongoDB.builder()
-								.idPlayer(player4.getIdPlayer())
-								.firstRoll(4)
-								.secondRoll(3)
-								.win(true)
-								.build();
-
-		iDiceRollMongo.save(diceRoll10);
+		player4.getDiceRolls().add(new DiceRollMongoDB(4,1));
+		player4.getDiceRolls().add(new DiceRollMongoDB(4,1));
+		player4.getDiceRolls().add(new DiceRollMongoDB(4,1));
+		player4.getDiceRolls().add(new DiceRollMongoDB(4,3));
+		iPlayerMongo.save(player4);		
 	}
 	
 	
@@ -216,7 +100,6 @@ public class MongoDBTest {
 	public void deletePlayers() {
 		
 		iPlayerMongo.deleteAll();
-		iDiceRollMongo.deleteAll();
 	}
 	
 	
@@ -230,23 +113,16 @@ public class MongoDBTest {
 		PlayerMongoDB player = PlayerMongoDB.builder()
 				.idPlayer(5)
 				.playerName("Antonella")
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
 				.registrationDate(currentDate).build();
 		
 		PlayerMongoDB playerSaved = iPlayerMongo.save(player);
 		
-		DiceRollMongoDB diceRoll = DiceRollMongoDB.builder()
-				.idPlayer(player.getIdPlayer())
-				.firstRoll(4)
-				.secondRoll(3)
-				.win(true)
-				.build();
-
-		iDiceRollMongo.save(diceRoll);
-		
 		assertThat(playerSaved).isNotNull();
 		assertThat(playerSaved.getIdPlayer()).isGreaterThan(0);
 		assertThat(playerSaved.getPlayerName()).isEqualTo("Antonella");
-	}
+	}	
 	
 	
 	//Test para obtener un jugador
@@ -259,26 +135,18 @@ public class MongoDBTest {
 		PlayerMongoDB player = PlayerMongoDB.builder()
 				.idPlayer(6)
 				.playerName("Romina")
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
 				.registrationDate(currentDate).build();
 		
-		iPlayerMongo.save(player);
-		
-		DiceRollMongoDB diceRoll = DiceRollMongoDB.builder()
-				.idPlayer(player.getIdPlayer())
-				.firstRoll(4)
-				.secondRoll(3)
-				.win(true)
-				.build();
-
-		iDiceRollMongo.save(diceRoll);
-		
+		iPlayerMongo.save(player);		
 		
 		Optional<PlayerMongoDB> onePlayer = iPlayerMongo.findById(6);
 		
-		assertThat(onePlayer).isNotEmpty();
+		assertThat(onePlayer.get()).isNotNull();
 		assertThat(onePlayer.get().getIdPlayer()).isEqualTo(6);
 		assertThat(onePlayer.get().getPlayerName()).isEqualTo("Romina");		
-	}
+	}	
 	
 	
 	//Test para cambiar el nombre de un jugador
@@ -310,35 +178,46 @@ public class MongoDBTest {
 	@Test
 	public void newDiceRollTest() {
 		
-		DiceRollMongoDB diceRollMongo = DiceRollMongoDB.builder()
-											.idPlayer(1)
-											.firstRoll(4)
-											.secondRoll(3)
-											.win(true)
-											.build();		
+		Date currentDate = new Date();
+		currentDate.getTime();
 		
-		DiceRollMongoDB savedDiceRoll = iDiceRollMongo.save(diceRollMongo);
+		PlayerMongoDB player = PlayerMongoDB.builder()
+				.idPlayer(7)
+				.playerName("Alejandra")
+				.successRate(0f)
+				.diceRolls(new ArrayList<DiceRollMongoDB>())
+				.registrationDate(currentDate).build();
 		
-		assertThat(savedDiceRoll.getIdPlayer()).isEqualTo(1);
-		assertThat(savedDiceRoll.getWin()).isEqualTo(true);		
+		iPlayerMongo.save(player);
+		
+		player.getDiceRolls().add(new DiceRollMongoDB(4 ,3));
+		
+		iPlayerMongo.save(player);
+		
+		Optional<PlayerMongoDB> playerAux = iPlayerMongo.findById(7);
+		
+		assertThat(playerAux.get().getDiceRolls()).isNotEmpty();
+		assertThat(playerAux.get().getDiceRolls().size()).isEqualTo(1);
+		assertThat(playerAux.get().getDiceRolls().get(0).getWin()).isEqualTo(true);
 	}
 	
 	
 	//Test para eliminar las tiradas de dados
+	@Test
 	public void deleteDiceRollTest() {
 		
-		iDiceRollMongo.deleteByIdPlayer(1);
+		Optional<PlayerMongoDB> player = iPlayerMongo.findById(4);
 		
-		List<DiceRollMongoDB> diceRolls = iDiceRollMongo.findByIdPlayer(1);
+		player.get().getDiceRolls().clear();
 		
-		assertThat(diceRolls.size()).isEqualTo(0);
-		assertThat(diceRolls).isEmpty();		
+		iPlayerMongo.save(player.get());
+		
+		assertThat(player.get().getDiceRolls().size()).isEqualTo(0);
+		assertThat(player.get().getDiceRolls()).isEmpty();		
 	}
 	
 	
 	//Test para obtener el rankking de los jugadores
-	//ESTE TEST NO LO PUEDO HACER FUNCIONAR - NO SE SI ES ALGO EN LA RELACION 
-	//ENTRE LAS COLECCIONES O QUE PUEDE SER, PERO NO FUNCIONA.
 	@Test
 	public void getRankingTest() {
 		List<PlayerMongoDB> ranking = implPlayerMongo.getRanking();
@@ -347,4 +226,26 @@ public class MongoDBTest {
 		assertThat(ranking.size()).isEqualTo(4);
 		assertThat(ranking.get(0).getPlayerName()).isEqualTo("Esteban");
 	}
+	
+	
+	//Test para obtener el jugador con mejor Ranking de tiradas
+	@Test
+	public void getWinnerTest() {
+		
+		PlayerMongoDB winner = implPlayerMongo.getWinner();
+		
+		assertThat(winner).isNotNull();		
+		assertThat(winner.getPlayerName()).isEqualTo("Esteban");		
+	}
+	
+	
+	//Test para obtener el jugador con peor Ranking de tiradas
+	@Test
+	public void getLoserTest() {
+		
+		PlayerMongoDB winner = implPlayerMongo.getLoser();
+		
+		assertThat(winner).isNotNull();		
+		assertThat(winner.getPlayerName()).isEqualTo("Carmina");		
+	}	
 }

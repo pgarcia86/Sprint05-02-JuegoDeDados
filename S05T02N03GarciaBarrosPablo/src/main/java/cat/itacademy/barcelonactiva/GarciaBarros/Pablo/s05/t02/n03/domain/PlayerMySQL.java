@@ -84,14 +84,13 @@ public class PlayerMySQL {
 		this.registrationDate = registrationDate;
 	}
 	
+	
 	public Float getSuccessRate() {
 		return this.successRate;
 	}
 	
+	
 	public void setSuccessRate(Float successRate) {
 		this.successRate = successRate;
 	}
-	
-	
-
 }

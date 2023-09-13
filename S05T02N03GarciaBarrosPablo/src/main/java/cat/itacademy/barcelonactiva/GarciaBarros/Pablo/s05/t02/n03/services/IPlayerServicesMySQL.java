@@ -10,11 +10,11 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 //deberia hacer un servicio para cada base de datos
 public interface IPlayerServicesMySQL {
 	
-	public List<PlayerMySQL> getAll();
+	public List<PlayerMySQL> getAllPlayers();
 	
-	public PlayerMySQL add(String name, String date);
+	public PlayerMySQL addNewPlayer(String name, String date);
 	
-	public PlayerMySQL update(Integer id, String name);	
+	public PlayerMySQL updatePlayerName(Integer id, String name);	
 	
 	public List<PlayerMySQL> getRanking();
 
@@ -28,7 +28,7 @@ public interface IPlayerServicesMySQL {
 	
 	public PlayerMySQL getOneByPlayerId(Integer id);
 	
-	public void delete (Integer id);
+	public void deleteDiceRolls (Integer id);
 
 
 }

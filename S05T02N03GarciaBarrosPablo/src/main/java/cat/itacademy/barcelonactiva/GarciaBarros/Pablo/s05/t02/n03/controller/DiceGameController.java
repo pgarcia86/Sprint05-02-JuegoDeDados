@@ -30,8 +30,9 @@ public class DiceGameController {
 	@GetMapping("/players")
 	private ResponseEntity<List<PlayerMySQL>> getAll(){
 		
-		return new ResponseEntity<>(playerMySQL.getAll(), HttpStatus.OK);
+		return new ResponseEntity<>(playerMySQL.getAllPlayers(), HttpStatus.OK);
 	}
+
 	
 	//Este metodo devuelve el jugador con el id ingresado
 	@GetMapping("/players/{id}")
@@ -40,12 +41,14 @@ public class DiceGameController {
 		return new ResponseEntity<PlayerMySQL>(playerMySQL.getOneByPlayerId(id), HttpStatus.OK);
 	}	
 	
+	
 	//Este metodo devuelve el ranking de los jugadores
 	@GetMapping("/players/ranking")
 	private ResponseEntity<List<PlayerMySQL>> getRanking(){
 		
 		return new ResponseEntity<List<PlayerMySQL>>(playerMySQL.getRanking(), HttpStatus.OK);
 	}
+	
 	
 	//Este metodo devuelve el jugador con peor ranking
 	@GetMapping("/players/ranking/loser")
@@ -54,6 +57,7 @@ public class DiceGameController {
 		return new ResponseEntity<List<PlayerMySQL>>(playerMySQL.getLoser(), HttpStatus.OK);
 	}
 	
+	
 	//Este metodo devuelve el jugador con mejor ranking
 	@GetMapping("/players/ranking/winner")
 	private ResponseEntity<List<PlayerMySQL>> getWinner(){
@@ -61,16 +65,18 @@ public class DiceGameController {
 		return new ResponseEntity<List<PlayerMySQL>>(playerMySQL.getWinner(), HttpStatus.OK);
 	}
 	
+	
 	//Este metodo añade un nuevo jugador
 	@PostMapping("/players/{name}/{date}")
 	private ResponseEntity<PlayerMySQL> addOne(@PathVariable("name") String name, @PathVariable("date") String date){
 		
-		PlayerMySQL playerAux = playerMySQL.add(name, date);
-		playerMongo.add(playerAux.getIdPlayer(), name, date);
+		PlayerMySQL playerAux = playerMySQL.addNewPlayer(name, date);
+		playerMongo.addNewPlayer(playerAux.getIdPlayer(), name, date);
 		return new ResponseEntity<PlayerMySQL>(playerAux, HttpStatus.CREATED);
 	}
 	
-	//Con este metodo simulo la tirada de dados
+	
+	//Este metodo simula una tirada de dados
 	@PostMapping("/players/{id}/newGame")
 	private ResponseEntity<DiceRollMySQL> play(@PathVariable("id") Integer id){
 		
@@ -82,23 +88,23 @@ public class DiceGameController {
 		return new ResponseEntity<DiceRollMySQL>(playerMySQL.play(id, firstRoll, secondRoll), HttpStatus.CREATED);
 	}
 	
+	
 	//Con este metodo modifico el nombre del jugador
 	@PutMapping("/players/{id}/{name}")
 	private ResponseEntity<PlayerMySQL> updateName(@PathVariable("id") Integer id, @PathVariable("name") String name){
 		
 		PlayerMySQL playerAux = playerMySQL.getOneByPlayerId(id);	
-		playerMongo.update(playerAux.getIdPlayer(), name, playerAux.getRegistrationDate());
+		playerMongo.updatePlayerName(playerAux.getIdPlayer(), name, playerAux.getRegistrationDate());
 		
-		return new ResponseEntity<PlayerMySQL>(playerMySQL.update(id, name), HttpStatus.OK);
+		return new ResponseEntity<PlayerMySQL>(playerMySQL.updatePlayerName(id, name), HttpStatus.OK);
 	}
+	
 	
 	//Con este metodo elimino las tiradas de un jugador especificado
 	@DeleteMapping("/players/{id}/games")
 	private ResponseEntity<String> deleteGame(@PathVariable("id") Integer id){
-		playerMySQL.delete(id);
-		playerMongo.delete(id);
+		playerMySQL.deleteDiceRolls(id);
+		playerMongo.deleteDiceRolls(id);
 		return new ResponseEntity<String>("Se eliminaron las jugadas", HttpStatus.OK);
 	}
-	
-
 }

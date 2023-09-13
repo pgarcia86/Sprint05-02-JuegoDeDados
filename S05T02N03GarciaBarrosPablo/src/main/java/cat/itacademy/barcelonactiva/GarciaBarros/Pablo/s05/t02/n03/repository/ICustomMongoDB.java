@@ -6,5 +6,9 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 public interface ICustomMongoDB {
 	
 	List<PlayerMongoDB> getRanking();
+	
+	PlayerMongoDB getWinner();
+	
+	PlayerMongoDB getLoser();
 
 }

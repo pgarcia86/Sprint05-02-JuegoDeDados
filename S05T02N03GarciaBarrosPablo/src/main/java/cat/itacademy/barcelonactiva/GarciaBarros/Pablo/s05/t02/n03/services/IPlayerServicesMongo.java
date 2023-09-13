@@ -9,16 +9,23 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 
 public interface IPlayerServicesMongo {
 	
-	public List<PlayerMongoDB> getAll();
+	public List<PlayerMongoDB> getAllPlayers();
 	
-	public PlayerMongoDB add(Integer id, String name, String registrationDate);
+	public PlayerMongoDB addNewPlayer(Integer id, String name, String registrationDate);
 	
 	public DiceRollMongoDB play(Integer id, Integer firstRoll, Integer secondRoll);
 	
-	public PlayerMongoDB update(Integer id, String name, Date date);
+	public PlayerMongoDB updatePlayerName(Integer id, String name, Date date);
 	
-	public void delete(Integer id);
+	public void deleteDiceRolls(Integer id);
 	
 	public Optional<PlayerMongoDB> getOnePlayer(Integer id);
-
+	
+	public List<PlayerMongoDB> getPlayersRanking();
+	
+	public PlayerMongoDB getWinnerPlayer();
+	
+	public PlayerMongoDB getLoserPlayer();
+	
+	public boolean existPlayer(Integer id);
 }

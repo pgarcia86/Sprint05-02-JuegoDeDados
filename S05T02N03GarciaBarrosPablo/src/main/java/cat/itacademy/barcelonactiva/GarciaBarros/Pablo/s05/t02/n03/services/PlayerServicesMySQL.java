@@ -16,27 +16,31 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.IP
 @Service
 public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	
+	
 	@Autowired
 	private IPlayerMySQL playerMySQL;
-	
+		
 	@Autowired
 	private IDiceRollMySQL diceRollMySQL;
 	
+	
 	@Override
-	public List<PlayerMySQL> getAll(){		
+	public List<PlayerMySQL> getAllPlayers(){		
 		return playerMySQL.findAll();
 	}
 
+	
 	@Override
-	public PlayerMySQL add(String name, String date) {
+	public PlayerMySQL addNewPlayer(String name, String date) {
 		
 		PlayerMySQL newPlayerMySQL = new PlayerMySQL(name, date);
 		playerMySQL.save(newPlayerMySQL);
 		return newPlayerMySQL;
 	}
 	
+	
 	@Override
-	public PlayerMySQL update(Integer id, String name) {
+	public PlayerMySQL updatePlayerName(Integer id, String name) {
 		
 		PlayerMySQL playerMySQLAux = playerMySQL.getReferenceById(id);
 		playerMySQLAux.setPlayerName(name);
@@ -44,6 +48,7 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		return playerMySQLAux;		
 	}
 
+	
 	@Override
 	public DiceRollMySQL play(Integer id, Integer firstRoll, Integer secondRoll) {
 		
@@ -61,26 +66,31 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		return null;		
 	}		
  	
+	
 	@Override
 	public List<PlayerMySQL> getRanking(){		
 		return this.playerMySQL.getRanking();
 	}	
 
+	
 	@Override
 	public List<PlayerMySQL> getLoser(){
 		return this.playerMySQL.getLoser();
 	}	
 
+	
 	@Override
 	public List<PlayerMySQL> getWinner(){
 		return this.playerMySQL.getWinner();
 	}
 
+	
 	@Override
 	@Transactional
-	public void delete(Integer id) {		
+	public void deleteDiceRolls(Integer id) {		
 		this.diceRollMySQL.deleteAll(id);		
 	}
+	
 	
 	@Override
 	public Boolean getOneById(Integer id) {
@@ -96,6 +106,7 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		}
 	}
 
+	
 	@Override
 	public PlayerMySQL getOneByPlayerId(Integer id) {
 		

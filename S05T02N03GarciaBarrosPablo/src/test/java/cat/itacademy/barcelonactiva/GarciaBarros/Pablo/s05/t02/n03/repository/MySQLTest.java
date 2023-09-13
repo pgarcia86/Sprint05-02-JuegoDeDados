@@ -6,13 +6,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import java.util.*;
+
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL;
-
-
 
 
 //Estos test estan hechos con JUnit
@@ -22,8 +23,7 @@ public class MySQLTest {
 	
 	@Autowired
 	private IPlayerMySQL iPlayerMySQL;
-	
-	
+		
 	@Autowired
 	private IDiceRollMySQL iDiceRollMySQL;	
 

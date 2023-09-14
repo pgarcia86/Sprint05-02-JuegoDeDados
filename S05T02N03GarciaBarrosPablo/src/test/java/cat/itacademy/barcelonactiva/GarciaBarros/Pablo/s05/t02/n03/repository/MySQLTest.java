@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -17,8 +17,8 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 
 
 //Estos test estan hechos con JUnit
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@DataJpaTest
+@SpringBootTest
+@Transactional
 public class MySQLTest {
 	
 	@Autowired
@@ -26,6 +26,9 @@ public class MySQLTest {
 		
 	@Autowired
 	private IDiceRollMySQL iDiceRollMySQL;	
+	
+	@Autowired
+	private ICustomMySQLImpl implPlayerMySQL;
 
 	
 	//Cargo jugadores en la base de datos de prueba antes de cada test
@@ -207,7 +210,7 @@ public class MySQLTest {
 		iPlayerMySQL.save(player1);
 		iPlayerMySQL.save(player2);
 			
-		PlayerMySQL getPlayer = iPlayerMySQL.getReferenceById(player1.getIdPlayer());
+		PlayerMySQL getPlayer = implPlayerMySQL.getOnePlayer(player1.getIdPlayer());
 		
 		assertThat(getPlayer).isNotNull();
 		assertThat(getPlayer.getPlayerName()).isEqualTo("Anabella");
@@ -249,7 +252,7 @@ public class MySQLTest {
 		
 		List<PlayerMySQL> playerList = iPlayerMySQL.findAll();		
 		Integer id = playerList.get(0).getIdPlayer();				
-		iDiceRollMySQL.deleteAll(id);
+		iDiceRollMySQL.deleteAllByIdPlayer(id);
 						
 		assertThat(iDiceRollMySQL.existsById(id)).isFalse();		
 	}
@@ -259,7 +262,7 @@ public class MySQLTest {
 	@Test
 	public void getRankingTest() {
 		
-		List<PlayerMySQL> getRanking = iPlayerMySQL.getRanking();
+		List<PlayerMySQL> getRanking = implPlayerMySQL.getRanking();
 		
 		assertThat(getRanking).isNotNull();
 		assertThat(getRanking.size()).isEqualTo(4);
@@ -271,10 +274,10 @@ public class MySQLTest {
 	@Test
 	public void getLoserTest() {
 		
-		List<PlayerMySQL> getLoser = iPlayerMySQL.getLoser();
+		PlayerMySQL getLoser = implPlayerMySQL.getLoser();
 		
-		assertThat(getLoser.size()).isEqualTo(1);
-		assertThat(getLoser.get(0).getPlayerName()).isEqualTo("Carmina");	
+		assertThat(getLoser).isNotNull();
+		assertThat(getLoser.getPlayerName()).isEqualTo("Carmina");	
 	}
 	
 	
@@ -282,12 +285,12 @@ public class MySQLTest {
 	@Test
 	public void getWinnerTest() {
 		
-		List<PlayerMySQL> getWinner = iPlayerMySQL.getWinner();
+		PlayerMySQL getWinner = implPlayerMySQL.getWinner();
 		
-		assertThat(getWinner.size()).isEqualTo(1);
-		assertThat(getWinner.get(0).getPlayerName()).isEqualTo("Esteban");		
+		assertThat(getWinner).isNotNull();
+		assertThat(getWinner.getPlayerName()).isEqualTo("Esteban");		
 	}	
-
+	
 
 	//Test para cambiar el nombre de un jugador
 	@Test
@@ -295,10 +298,8 @@ public class MySQLTest {
 		
 		List<PlayerMySQL> playerList = iPlayerMySQL.findAll();
 		
-		PlayerMySQL player = playerList.get(0);
-		
-		player.setPlayerName("Romina");
-		
+		PlayerMySQL player = playerList.get(0);		
+		player.setPlayerName("Romina");		
 		PlayerMySQL savedPlayer = iPlayerMySQL.save(player);
 		
 		assertThat(savedPlayer).isNotNull();

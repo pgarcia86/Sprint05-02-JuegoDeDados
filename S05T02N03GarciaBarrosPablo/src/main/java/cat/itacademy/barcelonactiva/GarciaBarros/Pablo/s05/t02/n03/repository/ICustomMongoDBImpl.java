@@ -31,11 +31,11 @@ public class ICustomMongoDBImpl implements ICustomMongoDB{
 				if(dice.getWin() == true) {
 					cantTrue++;
 				}
-				Float cantDice = (float) diceRolls.size();
-				player.setSuccessRate((float) ((cantTrue / cantDice) * 100));
-				playerMongo.save(player);				
-				cantTrue = 0f;
 			}
+			Float cantDice = (float) diceRolls.size();
+			player.setSuccessRate((cantTrue / cantDice) * 100);
+			playerMongo.save(player);				
+			cantTrue = 0f;
 		}		
 		players = playerMongo.findAll();		
 		return players;
@@ -45,21 +45,17 @@ public class ICustomMongoDBImpl implements ICustomMongoDB{
 	@Override
 	public PlayerMongoDB getWinner() {
 		
-		List<PlayerMongoDB> players = getRanking();
-		
-		players.sort(Comparator.comparing(PlayerMongoDB :: getSuccessRate));
-				
-		return players.get(3);		
+		List<PlayerMongoDB> players = getRanking();		
+		players.sort(Comparator.comparing(PlayerMongoDB :: getSuccessRate));				
+		return players.get(players.size() - 1);		
 	}
 
 	
 	@Override
 	public PlayerMongoDB getLoser() {
 		
-		List<PlayerMongoDB> players = getRanking();
-		
-		players.sort(Comparator.comparing(PlayerMongoDB :: getSuccessRate));
-				
+		List<PlayerMongoDB> players = getRanking();		
+		players.sort(Comparator.comparing(PlayerMongoDB :: getSuccessRate));				
 		return players.get(0);
 	}	
 }

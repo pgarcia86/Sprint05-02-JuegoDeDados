@@ -86,11 +86,14 @@ public class PlayerServicesMongo implements IPlayerServicesMongo{
 			Optional<PlayerMongoDB> playerAux = playerMongo.findById(id);
 			
 			playerAux.get().getDiceRolls().clear();
+			playerAux.get().setSuccessRate(0f);
 			
 			playerMongo.save(playerAux.get());
 			
 		}
 	}
+	
+	
 	@Override
 	public boolean existPlayer(Integer id) {
 		

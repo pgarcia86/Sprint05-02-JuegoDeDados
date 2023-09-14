@@ -6,8 +6,6 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRo
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL;
 
 
-
-//deberia hacer un servicio para cada base de datos
 public interface IPlayerServicesMySQL {
 	
 	public List<PlayerMySQL> getAllPlayers();
@@ -18,9 +16,9 @@ public interface IPlayerServicesMySQL {
 	
 	public List<PlayerMySQL> getRanking();
 
-	public List<PlayerMySQL> getLoser();
+	public PlayerMySQL getLoser();
 
-	public List<PlayerMySQL> getWinner();
+	public PlayerMySQL getWinner();
 	
 	public DiceRollMySQL play(Integer id, Integer firstRoll, Integer secondRoll);
 	

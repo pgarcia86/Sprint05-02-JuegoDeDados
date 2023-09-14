@@ -10,6 +10,7 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.controller.ex
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.controller.exceptions.NotValidIdException;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL;
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.ICustomMySQLImpl;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.IDiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.IPlayerMySQL;
 
@@ -22,6 +23,9 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		
 	@Autowired
 	private IDiceRollMySQL diceRollMySQL;
+	
+	@Autowired
+	private ICustomMySQLImpl customMySQL;
 	
 	
 	@Override
@@ -54,41 +58,58 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		
 		//Traigo de la base de datos el jugador que esta jugando
 		
-		if(getOneById(id) == true) {
-			PlayerMySQL player = playerMySQL.getReferenceById(id);	
-		
-			//Creo una instancia de la tirada de dados
-			DiceRollMySQL diceRoll = new DiceRollMySQL(player.getIdPlayer(),firstRoll, secondRoll);			
-			this.diceRollMySQL.save(diceRoll);
-			return diceRoll;
+		if(playerMySQL.existsById(id)) {
+			PlayerMySQL playerAux = playerMySQL.getReferenceById(id);
+			DiceRollMySQL newDiceRoll = new DiceRollMySQL(id, firstRoll, secondRoll); 
+			
+			diceRollMySQL.save(newDiceRoll);
+			
+			Float cantTrue = 0f;
+			
+			List<DiceRollMySQL> diceRollList = diceRollMySQL.findAllByIdPlayer(id);
+			
+			for (DiceRollMySQL diceRoll : diceRollList) {
+				if(diceRoll.getWin() == true) {
+					cantTrue++;
+				}
+			}
+			
+			Float cantDice = (float) diceRollList.size();
+			
+			playerAux.setSuccessRate((cantTrue / cantDice) * 100);
+			
+			playerMySQL.save(playerAux);
+			
+			return newDiceRoll;
 		}
-		
-		return null;		
+		return null;	
 	}		
  	
 	
 	@Override
 	public List<PlayerMySQL> getRanking(){		
-		return this.playerMySQL.getRanking();
+		return this.customMySQL.getRanking();
 	}	
 
 	
 	@Override
-	public List<PlayerMySQL> getLoser(){
-		return this.playerMySQL.getLoser();
+	public PlayerMySQL getLoser(){
+		
+		return this.customMySQL.getLoser();
 	}	
 
 	
 	@Override
-	public List<PlayerMySQL> getWinner(){
-		return this.playerMySQL.getWinner();
+	public PlayerMySQL getWinner(){
+		return this.customMySQL.getWinner();
+		
 	}
 
 	
 	@Override
 	@Transactional
-	public void deleteDiceRolls(Integer id) {		
-		this.diceRollMySQL.deleteAll(id);		
+	public void deleteDiceRolls(Integer id) {	
+		this.customMySQL.deleteAllDiceRolls(id);
 	}
 	
 	
@@ -111,11 +132,10 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	public PlayerMySQL getOneByPlayerId(Integer id) {
 		
 		if(getOneById(id) == true) {
-			return playerMySQL.getOnePlayer(id);
+			return customMySQL.getOnePlayer(id);
 		}
 		else {
 			return null;
 		}
 	}
-
 }

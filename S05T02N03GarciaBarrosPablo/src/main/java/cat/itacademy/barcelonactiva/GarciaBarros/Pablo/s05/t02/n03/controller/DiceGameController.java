@@ -52,17 +52,17 @@ public class DiceGameController {
 	
 	//Este metodo devuelve el jugador con peor ranking
 	@GetMapping("/players/ranking/loser")
-	private ResponseEntity<List<PlayerMySQL>> getLoser(){
+	private ResponseEntity<PlayerMySQL> getLoser(){
 		
-		return new ResponseEntity<List<PlayerMySQL>>(playerMySQL.getLoser(), HttpStatus.OK);
+		return new ResponseEntity<PlayerMySQL>(playerMySQL.getLoser(), HttpStatus.OK);
 	}
 	
 	
 	//Este metodo devuelve el jugador con mejor ranking
 	@GetMapping("/players/ranking/winner")
-	private ResponseEntity<List<PlayerMySQL>> getWinner(){
+	private ResponseEntity<PlayerMySQL> getWinner(){
 		
-		return new ResponseEntity<List<PlayerMySQL>>(playerMySQL.getWinner(), HttpStatus.OK);
+		return new ResponseEntity<PlayerMySQL>(playerMySQL.getWinner(), HttpStatus.OK);
 	}
 	
 	

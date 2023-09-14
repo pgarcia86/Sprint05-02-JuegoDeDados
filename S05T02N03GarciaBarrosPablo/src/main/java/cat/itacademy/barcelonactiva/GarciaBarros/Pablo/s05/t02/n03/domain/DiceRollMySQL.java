@@ -48,8 +48,7 @@ public class DiceRollMySQL {
 		}
 		else {
 			this.win = false;
-		}
-		
+		}		
 	}
 
 	public Integer getIdPlayer() {

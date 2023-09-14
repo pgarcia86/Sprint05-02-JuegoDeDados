@@ -34,20 +34,7 @@ public class SecurityConfig {
 	//Aqui configuro la cadena de filtros para segurizar mi API
 	@Bean 
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		/*
-		http
-			.csrf((csrf)->csrf.disable())
-			.exceptionHandling((exHand) -> exHand.authenticationEntryPoint(authEntryPoint))
-			.sessionManagement((sessManag) -> sessManag.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/**").permitAll()
-            .anyRequest().authenticated()
-        );
-		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		
-		return http.build();
-		*/
-		
+	
 		 http
 	         .csrf((csrf)->csrf.disable())
 	         .exceptionHandling((eh)-> eh.authenticationEntryPoint(authEntryPoint))

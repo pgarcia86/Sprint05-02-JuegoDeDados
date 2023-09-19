@@ -130,12 +130,14 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	
 	@Override
 	public PlayerMySQL getOneByPlayerId(Integer id) {
-		
+		/*
 		if(getOneById(id) == true) {
 			return customMySQL.getOnePlayer(id);
 		}
 		else {
 			return null;
 		}
+		*/
+		return customMySQL.getOnePlayer(id);
 	}
 }

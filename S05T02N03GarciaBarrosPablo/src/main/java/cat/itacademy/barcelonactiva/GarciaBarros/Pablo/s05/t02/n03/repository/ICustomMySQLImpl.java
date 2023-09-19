@@ -6,6 +6,7 @@ import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.controller.exceptions.NotFoundIdException;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL;
 
@@ -22,7 +23,7 @@ public class ICustomMySQLImpl implements ICustomMySQL{
 	@Override
 	public PlayerMySQL getOnePlayer(Integer id) {
 		
-		PlayerMySQL player = playerMySQL.getReferenceById(id);
+		PlayerMySQL player = playerMySQL.findById(id).orElseThrow(() -> new NotFoundIdException("El id ingresado no existe - ID = " + id));
 		return player;
 	}
 

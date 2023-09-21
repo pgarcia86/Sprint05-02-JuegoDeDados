@@ -14,5 +14,7 @@ public interface ICustomMongoDB {
 	PlayerMongoDB getWinner();
 	
 	PlayerMongoDB getLoser();
+	
+	PlayerMongoDB getOnePlayer(Integer id);
 
 }

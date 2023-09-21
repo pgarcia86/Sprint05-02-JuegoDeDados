@@ -9,5 +9,4 @@ public class S05T02N03GarciaBarrosPabloApplication {
     public static void main(String[] args) {
         SpringApplication.run(S05T02N03GarciaBarrosPabloApplication.class, args);
     }
-
 }

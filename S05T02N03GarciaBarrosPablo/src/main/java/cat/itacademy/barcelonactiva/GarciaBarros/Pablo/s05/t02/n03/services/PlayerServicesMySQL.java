@@ -1,23 +1,23 @@
 package cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.controller.exceptions.NotFoundIdException;
-import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.controller.exceptions.NotValidIdException;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMySQL;
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DTO.DiceRollMySQLDTO;
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DTO.PlayerMySQLDTO;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.ICustomMySQLImpl;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.IDiceRollMySQL;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.repository.IPlayerMySQL;
 
 @Service
 public class PlayerServicesMySQL implements IPlayerServicesMySQL{
-	
-	
+		
 	@Autowired
 	private IPlayerMySQL playerMySQL;
 		
@@ -29,79 +29,79 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	
 	
 	@Override
-	public List<PlayerMySQL> getAllPlayers(){		
-		return playerMySQL.findAll();
+	public List<PlayerMySQLDTO> getAllPlayers(){	
+		
+		List<PlayerMySQL> players = playerMySQL.findAll();
+		List<PlayerMySQLDTO> playersDTO = new ArrayList<>();
+		
+		for (PlayerMySQL player : players) {
+			
+			playersDTO.add(returnDTO(player));			
+		}		
+		return playersDTO;
 	}
 
 	
 	@Override
-	public PlayerMySQL addNewPlayer(String name, String date) {
+	public PlayerMySQLDTO addNewPlayer(String name, String date) {
 		
 		PlayerMySQL newPlayerMySQL = new PlayerMySQL(name, date);
 		playerMySQL.save(newPlayerMySQL);
-		return newPlayerMySQL;
+		return returnDTO(newPlayerMySQL);
 	}
 	
 	
 	@Override
-	public PlayerMySQL updatePlayerName(Integer id, String name) {
+	public PlayerMySQLDTO updatePlayerName(Integer id, String name) {
 		
 		PlayerMySQL playerMySQLAux = playerMySQL.getReferenceById(id);
 		playerMySQLAux.setPlayerName(name);
 		playerMySQL.save(playerMySQLAux);
-		return playerMySQLAux;		
+		return returnDTO(playerMySQLAux);		
 	}
 
 	
 	@Override
-	public DiceRollMySQL play(Integer id, Integer firstRoll, Integer secondRoll) {
+	public DiceRollMySQLDTO play(Integer id, Integer firstRoll, Integer secondRoll) {
 		
-		//Traigo de la base de datos el jugador que esta jugando
-		
-		if(playerMySQL.existsById(id)) {
-			PlayerMySQL playerAux = playerMySQL.getReferenceById(id);
-			DiceRollMySQL newDiceRoll = new DiceRollMySQL(id, firstRoll, secondRoll); 
-			
-			diceRollMySQL.save(newDiceRoll);
-			
-			Float cantTrue = 0f;
-			
-			List<DiceRollMySQL> diceRollList = diceRollMySQL.findAllByIdPlayer(id);
-			
-			for (DiceRollMySQL diceRoll : diceRollList) {
-				if(diceRoll.getWin() == true) {
-					cantTrue++;
-				}
+		//Traigo de la base de datos el jugador que esta jugando		
+		PlayerMySQL playerAux = playerMySQL.getReferenceById(id);
+		DiceRollMySQL newDiceRoll = new DiceRollMySQL(playerAux, firstRoll, secondRoll); 			
+		diceRollMySQL.save(newDiceRoll);
+		Float cantTrue = 0f;
+		List<DiceRollMySQL> diceRollList = diceRollMySQL.findAllByIdPlayer(id);
+		for (DiceRollMySQL diceRoll : diceRollList) {
+			if(diceRoll.getWin() == true) {
+				cantTrue++;
 			}
-			
-			Float cantDice = (float) diceRollList.size();
-			
-			playerAux.setSuccessRate((cantTrue / cantDice) * 100);
-			
-			playerMySQL.save(playerAux);
-			
-			return newDiceRoll;
 		}
-		return null;	
+			
+		Float cantDice = (float) diceRollList.size();
+		playerAux.setSuccessRate((cantTrue / cantDice) * 100);			
+		playerMySQL.save(playerAux);
+			
+		return returnDiceRollDTO(newDiceRoll);
 	}		
  	
 	
 	@Override
-	public List<PlayerMySQL> getRanking(){		
-		return this.customMySQL.getRanking();
-	}	
-
-	
-	@Override
-	public PlayerMySQL getLoser(){
+	public List<PlayerMySQLDTO> getRanking(){	
 		
-		return this.customMySQL.getLoser();
+		customMySQL.getRanking();		
+		return getAllPlayers();
 	}	
 
 	
 	@Override
-	public PlayerMySQL getWinner(){
-		return this.customMySQL.getWinner();
+	public PlayerMySQLDTO getLoser(){
+		
+		return returnDTO(customMySQL.getLoser());
+	}	
+
+	
+	@Override
+	public PlayerMySQLDTO getWinner(){
+		return returnDTO(customMySQL.getWinner());
 		
 	}
 
@@ -112,32 +112,37 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 		this.customMySQL.deleteAllDiceRolls(id);
 	}
 	
-	
+
 	@Override
-	public Boolean getOneById(Integer id) {
+	public PlayerMySQLDTO getOneByPlayerId(Integer id) {
+
+		PlayerMySQL player = customMySQL.getOnePlayer(id);
 		
-		if(id <= 0) {
-			throw new NotValidIdException("El id debe ser mayor a 0 - ID = " + id);
-		}
-		else if(playerMySQL.existsById(id) == false){
-			throw new NotFoundIdException("El id ingresado no existe - ID = " + id);
-		}
-		else{
-			return true;
-		}
+		return returnDTO(player);
+	}
+
+
+	private PlayerMySQLDTO returnDTO(PlayerMySQL player) {
+		
+		PlayerMySQLDTO playerDTO = new PlayerMySQLDTO();
+		playerDTO.setIdPlayer(player.getIdPlayer());
+		playerDTO.setPlayerName(player.getPlayerName());
+		playerDTO.setRegistrationDate(player.getRegistrationDate());
+		playerDTO.setSuccessRate(player.getSuccessRate());
+		
+		return playerDTO;	
 	}
 
 	
-	@Override
-	public PlayerMySQL getOneByPlayerId(Integer id) {
-		/*
-		if(getOneById(id) == true) {
-			return customMySQL.getOnePlayer(id);
-		}
-		else {
-			return null;
-		}
-		*/
-		return customMySQL.getOnePlayer(id);
+	private DiceRollMySQLDTO returnDiceRollDTO(DiceRollMySQL diceRoll) {
+		
+		DiceRollMySQLDTO diceRollDTO = new DiceRollMySQLDTO();
+		diceRollDTO.setIdGame(diceRoll.getIdGame());
+		diceRollDTO.setIdPlayer(diceRoll.getIdPlayer());
+		diceRollDTO.setFirstRoll(diceRoll.getFirstRoll());
+		diceRollDTO.setSecondRoll(diceRoll.getSecondRoll());
+		diceRollDTO.setWin(diceRoll.getWin());
+		
+		return diceRollDTO;		
 	}
 }

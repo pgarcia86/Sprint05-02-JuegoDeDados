@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.controller.exceptions.NotFoundIdException;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMongoDB;
 import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMongoDB;
 
@@ -14,6 +14,14 @@ public class ICustomMongoDBImpl implements ICustomMongoDB{
 	
 	@Autowired
 	private IPlayerMongoDB playerMongo;
+	
+	
+	@Override
+	public PlayerMongoDB getOnePlayer(Integer id) {
+		
+		PlayerMongoDB player = playerMongo.findById(id).orElseThrow(() -> new NotFoundIdException("El id ingresado no existe - ID = " + id));
+		return player;
+	}
 
 	
 	@Override
@@ -33,7 +41,12 @@ public class ICustomMongoDBImpl implements ICustomMongoDB{
 				}
 			}
 			Float cantDice = (float) diceRolls.size();
-			player.setSuccessRate((cantTrue / cantDice) * 100);
+			if(cantDice == 0) {
+				player.setSuccessRate(0f);
+			}
+			else {
+				player.setSuccessRate((cantTrue / cantDice) * 100);
+			}
 			playerMongo.save(player);				
 			cantTrue = 0f;
 		}		

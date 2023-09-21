@@ -2,30 +2,26 @@ package cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.services;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DiceRollMongoDB;
-import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.PlayerMongoDB;
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DTO.DiceRollMongoDTO;
+import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.DTO.PlayerMongoDTO;
 
 public interface IPlayerServicesMongo {
 	
-	public List<PlayerMongoDB> getAllPlayers();
+	public List<PlayerMongoDTO> getAllPlayers();
 	
-	public PlayerMongoDB addNewPlayer(Integer id, String name, String registrationDate);
+	public PlayerMongoDTO addNewPlayer(Integer id, String name, String registrationDate);
 	
-	public DiceRollMongoDB play(Integer id, Integer firstRoll, Integer secondRoll);
+	public DiceRollMongoDTO play(Integer id, Integer firstRoll, Integer secondRoll);
 	
-	public PlayerMongoDB updatePlayerName(Integer id, String name, Date date);
+	public PlayerMongoDTO updatePlayerName(Integer id, String name, Date date);
 	
 	public void deleteDiceRolls(Integer id);
 	
-	public Optional<PlayerMongoDB> getOnePlayer(Integer id);
+	public PlayerMongoDTO getOneByPlayerId(Integer id);
 	
-	public List<PlayerMongoDB> getPlayersRanking();
+	public List<PlayerMongoDTO> getRanking();
 	
-	public PlayerMongoDB getWinnerPlayer();
+	public PlayerMongoDTO getWinner();
 	
-	public PlayerMongoDB getLoserPlayer();
-	
-	public boolean existPlayer(Integer id);
+	public PlayerMongoDTO getLoser();
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,9 @@ public class DiceRollMySQL {
 	@Column(name = "win")
 	private Boolean win;
 	
+	@ManyToOne
+	private PlayerMySQL player;
+	
 	public DiceRollMySQL(Integer id, Integer firstRoll, Integer secondRoll) {
 		
 		this.idPlayer = id;
@@ -48,7 +52,21 @@ public class DiceRollMySQL {
 		}
 		else {
 			this.win = false;
-		}		
+		}	
+	}
+	
+	public DiceRollMySQL(PlayerMySQL player, Integer firstRoll, Integer secondRoll) {
+		
+		this.player = player;
+		this.idPlayer = this.player.getIdPlayer();
+		this.firstRoll = firstRoll;
+		this.secondRoll = secondRoll;
+		if(this.firstRoll + this.secondRoll == 7) {
+			this.win = true;
+		}
+		else {
+			this.win = false;
+		}	
 	}
 
 	public Integer getIdPlayer() {

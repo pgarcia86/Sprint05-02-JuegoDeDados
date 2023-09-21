@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DiceRollMongoDB {
 	
+	private Integer idPlayer;
+	
 	private Integer firstRoll;
 
 	private Integer secondRoll;	
@@ -30,7 +32,21 @@ public class DiceRollMongoDB {
 		else {
 			this.win = false;
 		}		
-	}	
+	}
+	
+	
+	public DiceRollMongoDB(Integer id, Integer firstRoll, Integer secondRoll) {
+		
+		this.idPlayer = id;
+		this.firstRoll = firstRoll;
+		this.secondRoll = secondRoll;
+		if(this.firstRoll + this.secondRoll == 7) {
+			this.win = true;
+		}
+		else {
+			this.win = false;
+		}		
+	}
 
 	
 	public Integer getFirstRoll() {

@@ -19,7 +19,7 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 //Estos test estan hechos con JUnit
 @SpringBootTest
 @Transactional
-public class MySQLTest {
+public class MySQLRepositoryTest {
 	
 	@Autowired
 	private IPlayerMySQL iPlayerMySQL;

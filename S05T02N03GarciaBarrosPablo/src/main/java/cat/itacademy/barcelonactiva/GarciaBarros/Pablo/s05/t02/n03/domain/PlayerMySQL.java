@@ -1,15 +1,20 @@
 package cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +44,9 @@ public class PlayerMySQL {
 	@Column(name = "success_rate")
 	private Float successRate;
 	
+	@OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+	private List<DiceRollMySQL> diceRolls;
+	
 	public PlayerMySQL(String name, String date) {
 		
 		this.playerName = name;
@@ -52,6 +60,9 @@ public class PlayerMySQL {
 		catch (ParseException e){
 			e.printStackTrace();
 		}
+		
+		this.diceRolls = new ArrayList<DiceRollMySQL>();
+		this.successRate = 0f;
 	}
 
 

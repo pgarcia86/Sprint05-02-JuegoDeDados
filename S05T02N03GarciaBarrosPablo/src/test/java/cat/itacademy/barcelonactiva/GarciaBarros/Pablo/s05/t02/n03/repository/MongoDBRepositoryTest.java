@@ -20,7 +20,7 @@ import cat.itacademy.barcelonactiva.GarciaBarros.Pablo.s05.t02.n03.domain.Player
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MongoDBTest {
+public class MongoDBRepositoryTest {
 
 	
 	@Autowired

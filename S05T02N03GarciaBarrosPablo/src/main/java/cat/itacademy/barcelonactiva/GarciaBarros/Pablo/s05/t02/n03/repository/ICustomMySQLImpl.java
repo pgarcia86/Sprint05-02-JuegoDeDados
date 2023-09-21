@@ -31,9 +31,9 @@ public class ICustomMySQLImpl implements ICustomMySQL{
 	@Override
 	public void deleteAllDiceRolls(Integer id) {
 		
-		diceRollMySQL.deleteAllByIdPlayer(id);
-		PlayerMySQL player = playerMySQL.getReferenceById(id);
+		PlayerMySQL player = getOnePlayer(id);
 		player.setSuccessRate(0f);
+		diceRollMySQL.deleteAllByIdPlayer(id);
 		playerMySQL.save(player);		
 	}
 
@@ -53,7 +53,12 @@ public class ICustomMySQLImpl implements ICustomMySQL{
 				}						
 			}		
 			Float cantDice = (float)diceRolls.size();
-			player.setSuccessRate((cantTrue / cantDice) * 100);
+			if(cantDice == 0) {
+				player.setSuccessRate(0f);
+			}
+			else {
+				player.setSuccessRate((cantTrue / cantDice) * 100);
+			}
 			playerMySQL.save(player);
 			cantTrue = 0f;
 		}		

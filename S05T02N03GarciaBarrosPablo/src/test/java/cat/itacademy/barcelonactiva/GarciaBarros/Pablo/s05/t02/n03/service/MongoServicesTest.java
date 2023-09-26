@@ -274,9 +274,9 @@ public class MongoServicesTest {
 		
 		when(customPlayer.getOnePlayer(1)).thenReturn(player);
 		
-		DiceRollMongoDTO playedDiceRoll = playerServices.play(1, 4, 3);
+		DiceRollMongoDTO playedDiceRoll = playerServices.play(1);
 		
 		Assertions.assertThat(playedDiceRoll).isNotNull();
-		Assertions.assertThat(playedDiceRoll.getWin()).isEqualTo(true);		
+		//Assertions.assertThat(playedDiceRoll.getWin()).isEqualTo(true);		
 	}
 }

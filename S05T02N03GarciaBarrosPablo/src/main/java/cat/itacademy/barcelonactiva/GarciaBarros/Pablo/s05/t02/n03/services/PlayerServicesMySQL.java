@@ -54,7 +54,7 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 	@Override
 	public PlayerMySQLDTO updatePlayerName(Integer id, String name) {
 		
-		PlayerMySQL playerMySQLAux = playerMySQL.getReferenceById(id);
+		PlayerMySQL playerMySQLAux = customMySQL.getOnePlayer(id);
 		playerMySQLAux.setPlayerName(name);
 		playerMySQL.save(playerMySQLAux);
 		return returnDTO(playerMySQLAux);		
@@ -62,10 +62,13 @@ public class PlayerServicesMySQL implements IPlayerServicesMySQL{
 
 	
 	@Override
-	public DiceRollMySQLDTO play(Integer id, Integer firstRoll, Integer secondRoll) {
+	public DiceRollMySQLDTO play(Integer id) {
+		
+		Integer firstRoll = (int) (Math.random() * 6) + 1;
+		Integer secondRoll = (int) (Math.random() * 6) + 1;
 		
 		//Traigo de la base de datos el jugador que esta jugando		
-		PlayerMySQL playerAux = playerMySQL.getReferenceById(id);
+		PlayerMySQL playerAux = customMySQL.getOnePlayer(id);
 		DiceRollMySQL newDiceRoll = new DiceRollMySQL(playerAux, firstRoll, secondRoll); 			
 		diceRollMySQL.save(newDiceRoll);
 		Float cantTrue = 0f;

@@ -108,7 +108,7 @@ public class MySQLServiceTest {
 				.registrationDate(currentDate)
 				.build();
 		
-		when(playerMySQL.getReferenceById(1)).thenReturn(player);
+		when(customPlayer.getOnePlayer(1)).thenReturn(player);
 		when(playerMySQL.save(Mockito.any(PlayerMySQL.class))).thenReturn(player);
 		
 		PlayerMySQLDTO updatedPlayer = playerServices.updatePlayerName(1, "Adrian");
@@ -254,11 +254,11 @@ public class MySQLServiceTest {
 				.successRate(0f)
 				.build();	
 		
-		when(playerMySQL.getReferenceById(1)).thenReturn(player);
+		when(customPlayer.getOnePlayer(1)).thenReturn(player);
 		
-		DiceRollMySQLDTO playedDiceRoll = playerServices.play(1, 4, 3);
+		DiceRollMySQLDTO playedDiceRoll = playerServices.play(1);
 		
 		Assertions.assertThat(playedDiceRoll).isNotNull();
-		Assertions.assertThat(playedDiceRoll.getWin()).isEqualTo(true);		
+		//Assertions.assertThat(playedDiceRoll.getWin()).isEqualTo(true);		
 	}
 }

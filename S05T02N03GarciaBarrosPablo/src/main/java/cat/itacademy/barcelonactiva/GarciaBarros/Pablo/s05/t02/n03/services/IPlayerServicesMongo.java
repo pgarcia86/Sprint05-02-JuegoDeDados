@@ -11,7 +11,7 @@ public interface IPlayerServicesMongo {
 	
 	public PlayerMongoDTO addNewPlayer(Integer id, String name, String registrationDate);
 	
-	public DiceRollMongoDTO play(Integer id, Integer firstRoll, Integer secondRoll);
+	public DiceRollMongoDTO play(Integer id);
 	
 	public PlayerMongoDTO updatePlayerName(Integer id, String name, Date date);
 	

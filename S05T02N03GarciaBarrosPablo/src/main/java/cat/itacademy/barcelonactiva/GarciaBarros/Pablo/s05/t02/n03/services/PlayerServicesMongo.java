@@ -60,8 +60,11 @@ public class PlayerServicesMongo implements IPlayerServicesMongo{
 	
 	
 	@Override
-	public DiceRollMongoDTO play(Integer id, Integer firstRoll, Integer secondRoll) {
+	public DiceRollMongoDTO play(Integer id) {
 		
+		Integer firstRoll = (int) (Math.random() * 6) + 1;
+		Integer secondRoll = (int) (Math.random() * 6) + 1;
+			
 			PlayerMongoDB playerAux = customPlayerMongo.getOnePlayer(id);
 			DiceRollMongoDB newDiceRoll = new DiceRollMongoDB(id, firstRoll, secondRoll); 
 			

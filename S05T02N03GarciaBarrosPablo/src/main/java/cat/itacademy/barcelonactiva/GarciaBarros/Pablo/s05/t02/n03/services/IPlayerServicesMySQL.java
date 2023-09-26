@@ -20,7 +20,7 @@ public interface IPlayerServicesMySQL {
 
 	public PlayerMySQLDTO getWinner();
 	
-	public DiceRollMySQLDTO play(Integer id, Integer firstRoll, Integer secondRoll);
+	public DiceRollMySQLDTO play(Integer id);
 	
 	public PlayerMySQLDTO getOneByPlayerId(Integer id);
 	

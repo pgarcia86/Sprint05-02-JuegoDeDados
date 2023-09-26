@@ -72,7 +72,8 @@ public class DiceGameControllerMongoDB {
 	private ResponseEntity<PlayerMongoDTO> addOne(@PathVariable("name") String name, @PathVariable("date") String date){
 		
 		PlayerMySQLDTO playerAux = playerMySQL.addNewPlayer(name, date);
-		PlayerMongoDTO playerMongoDTO = playerMongo.addNewPlayer(playerAux.getIdPlayer(), name, date);		
+		Integer playerId = playerAux.getIdPlayer();
+		PlayerMongoDTO playerMongoDTO = playerMongo.addNewPlayer(playerId, name, date);		
 		
 		return new ResponseEntity<PlayerMongoDTO>(playerMongoDTO, HttpStatus.CREATED);
 	}
@@ -81,12 +82,10 @@ public class DiceGameControllerMongoDB {
 	//Este metodo simula una tirada de dados
 	@PostMapping("/playersMongo/{id}/newGame")
 	private ResponseEntity<DiceRollMongoDTO> play(@PathVariable("id") Integer id){
+				
+		playerMySQL.play(id);
 		
-		Integer firstRoll = (int) (Math.random() * 6) + 1;
-		Integer secondRoll = (int) (Math.random() * 6) + 1;		
-		playerMySQL.play(id, firstRoll, secondRoll);
-		
-		return new ResponseEntity<DiceRollMongoDTO>(playerMongo.play(id, firstRoll, secondRoll), HttpStatus.CREATED);
+		return new ResponseEntity<DiceRollMongoDTO>(playerMongo.play(id), HttpStatus.CREATED);
 	}
 	
 	

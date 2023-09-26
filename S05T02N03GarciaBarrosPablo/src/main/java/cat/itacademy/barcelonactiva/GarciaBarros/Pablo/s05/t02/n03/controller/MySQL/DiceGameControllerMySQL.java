@@ -26,6 +26,17 @@ public class DiceGameControllerMySQL {
 	@Autowired
 	private PlayerServicesMongo playerMongo;
 	
+	
+	//Este metodo añade un nuevo jugador
+	@PostMapping("/playersMySQL/{name}/{date}")
+	private ResponseEntity<PlayerMySQLDTO> addOne(@PathVariable("name") String name, @PathVariable("date") String date){
+		
+		PlayerMySQLDTO playerAux = playerMySQL.addNewPlayer(name, date);
+		playerMongo.addNewPlayer(playerAux.getIdPlayer(), name, date);
+		return new ResponseEntity<PlayerMySQLDTO>(playerAux, HttpStatus.CREATED);
+	}
+	
+	
 	//Este metodo devuelve todos los jugadores
 	@GetMapping("/playersMySQL")
 	private ResponseEntity<List<PlayerMySQLDTO>> getAll(){
@@ -64,27 +75,15 @@ public class DiceGameControllerMySQL {
 		
 		return new ResponseEntity<PlayerMySQLDTO>(playerMySQL.getWinner(), HttpStatus.OK);
 	}
-	
-	
-	//Este metodo añade un nuevo jugador
-	@PostMapping("/playersMySQL/{name}/{date}")
-	private ResponseEntity<PlayerMySQLDTO> addOne(@PathVariable("name") String name, @PathVariable("date") String date){
 		
-		PlayerMySQLDTO playerAux = playerMySQL.addNewPlayer(name, date);
-		playerMongo.addNewPlayer(playerAux.getIdPlayer(), name, date);
-		return new ResponseEntity<PlayerMySQLDTO>(playerAux, HttpStatus.CREATED);
-	}
-	
 	
 	//Este metodo simula una tirada de dados
 	@PostMapping("/playersMySQL/{id}/newGame")
 	private ResponseEntity<DiceRollMySQLDTO> play(@PathVariable("id") Integer id){
 		
-		Integer firstRoll = (int) (Math.random() * 6) + 1;
-		Integer secondRoll = (int) (Math.random() * 6) + 1;		
-		playerMongo.play(id, firstRoll, secondRoll);
+		playerMongo.play(id);
 		
-		return new ResponseEntity<DiceRollMySQLDTO>(playerMySQL.play(id, firstRoll, secondRoll), HttpStatus.CREATED);
+		return new ResponseEntity<DiceRollMySQLDTO>(playerMySQL.play(id), HttpStatus.CREATED);
 	}
 	
 	

@@ -14,7 +14,7 @@
 	<name>S05T02N03GarciaBarrosPablo</name>
 	<description>S05T01N03GarciaBarrosPablo</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>17.0.2</java.version>
 	</properties>
 	
 	<dependencies>

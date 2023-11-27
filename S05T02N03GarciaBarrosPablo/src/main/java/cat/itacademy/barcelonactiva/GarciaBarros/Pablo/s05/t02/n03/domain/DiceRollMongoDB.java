@@ -34,7 +34,6 @@ public class DiceRollMongoDB {
 		}		
 	}
 	
-	
 	public DiceRollMongoDB(Integer id, Integer firstRoll, Integer secondRoll) {
 		
 		this.idPlayer = id;
@@ -48,32 +47,21 @@ public class DiceRollMongoDB {
 		}		
 	}
 
-	
 	public Integer getFirstRoll() {
 		return firstRoll;
 	}
-
-	
 	public void setFirstRoll(Integer firstRoll) {
 		this.firstRoll = firstRoll;
 	}
-
-	
 	public Integer getSecondRoll() {
 		return secondRoll;
 	}
-
-	
 	public void setSecondRoll(Integer secondRoll) {
 		this.secondRoll = secondRoll;
 	}
-
-	
 	public Boolean getWin() {
 		return win;
 	}
-
-	
 	public void setWin(Boolean win) {
 		this.win = win;
 	}
